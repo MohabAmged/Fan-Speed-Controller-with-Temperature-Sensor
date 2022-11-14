@@ -1,0 +1,102 @@
+
+/**********************************************************************************************************************
+ *  FILE DESCRIPTION
+ *  -------------------------------------------------------------------------------------------------------------------
+ *  File:  		  ADC.h
+ *  Module:  	  ADC
+ *
+ *  Description:  Header file for the ADC
+ *
+ *  -------------------------------------------------------------------------------------------------------------------
+ *	Author: 	  Mohab Amged
+ *	Date:		  6/10/2022
+ *********************************************************************************************************************/
+
+#ifndef MCAL_ADC_H_
+#define MCAL_ADC_H_
+
+/**************************************************************************************************************************************
+*
+*                                                 INCLUDES
+*
+**************************************************************************************************************************************/
+#include "Macros.h"
+#include "Std_Types.h"
+#include "avr/io.h"
+
+/**************************************************************************************************************************************
+*
+*                                                 types Definition
+*
+**************************************************************************************************************************************/
+#define ADC_MAXIMUM_VALUE 1023
+#define ADC_REF_VOLT_VALUE 2.56
+
+
+
+	/*              ReferenceVolatge Type                       */
+ typedef enum
+ {
+	 ADC_AREF,
+	 ADC_AVCC=64,
+	 ADC_INTERNAL=192
+ } ADC_ReferenceVolatge;
+
+
+
+
+	/*          Prescalers Definition Type                       */
+ typedef enum
+ {
+    ADC_DIV2=1,
+	ADC_DIV4,
+	ADC_DIV8,
+	ADC_DIV16,
+	ADC_DIV32,
+	ADC_DIV64,
+	ADC_DIV128
+ } ADC_Prescaler;
+
+
+	/*          Prescalers Definition Type                       */
+typedef enum
+{
+	ADC0,
+	ADC1,
+	ADC2,
+	ADC3,
+	ADC4,
+	ADC5,
+	ADC6,
+	ADC7
+} ADC_Channel;
+
+
+
+
+ /*          Config Struct Type                       */
+
+ typedef struct{
+
+  ADC_ReferenceVolatge ref_volt;
+  ADC_Prescaler prescaler;
+
+ }ADC_ConfigType;
+
+
+/**************************************************************************************************************************************
+*
+*                                                Functions Prototypes
+*
+**************************************************************************************************************************************/
+
+ /* ADC Init Function */
+ void ADC_init(const ADC_ConfigType * Config_Ptr);
+
+
+ /* ADC Read Channel Function */
+ uint16 ADC_ReadChannel(ADC_Channel Channel);
+
+
+
+#endif /* MCAL_ADC_H_ */

@@ -1,0 +1,13 @@
+/*
+ * DC_Motor.h
+ *
+ *  Created on: 7 Oct 2022
+ *      Author: marwa
+ */
+
+#ifndef HAL_DC_MOTOR_H_
+#define HAL_DC_MOTOR_H_
+
+
+
+#endif /* HAL_DC_MOTOR_H_ */

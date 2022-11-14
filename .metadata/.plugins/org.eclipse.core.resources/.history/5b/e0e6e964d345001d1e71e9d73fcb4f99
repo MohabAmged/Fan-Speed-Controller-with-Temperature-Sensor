@@ -1,0 +1,254 @@
+/*
+ *                                LCD Driver Src file
+ *
+ * Module : LCD.c
+ *  *
+ * Author : Mohab Amged
+ *
+ * Created on: 3 Oct 2022
+ *
+ */
+
+/********************************************* Includes *******************************************************************************/
+#include "LCD.h"
+#include "util/delay.h"
+#include "GPIO.h"
+/********************************************* Functions Prototypes *******************************************************************************/
+
+void LCD_SendCommand(uint8 Comm) /* Send Commands Func */
+{
+
+
+	GPIO_writePin(LCD_RS_E_PORT,LCD_RS_PIN,PLOW); /* LCD RS Command Select */
+
+	/* 8 Bits Command */
+
+#if LCD_PINNUMBER==4   /*     Used 4 Bits */
+
+	    LCD_PORT= (LCD_PORT & LCD_MASK) | ((Comm & (~LCD_MASK))<<LCD_PINSSHMSB);  /* Inserting The First 4 Bits */
+
+	  /* Enable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PHIGH);
+
+		/* Delay for Some Seconds */
+		_delay_ms(2);
+
+		/* Disable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PLOW);
+
+
+	    LCD_PORT= (LCD_PORT & (LCD_MASK)) | ((Comm & (LCD_MASK))>>LCD_PINSSHLSB) ;  /* Inserting The 2nd 4 Bits */
+
+	  /* Enable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PHIGH);
+
+		/* Delay for Some Seconds */
+		_delay_ms(2);
+
+		/* Disable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PLOW);
+
+
+
+#elif   LCD_PINNUMBER==8 /* Used 8 bits */
+
+
+	   LCD_PORT=Comm;
+
+	  /* Enable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PHIGH);
+
+		/* Delay for Some Seconds */
+		_delay_ms(2);
+
+		/* Disable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PLOW);
+#endif
+
+
+
+}
+
+
+void LCD_Init(void) /* Init Func */
+{
+
+	_delay_ms(40); /* Delay As Data Sheet */
+
+	/* Mode Selection */
+	LCD_SendCommand(LCD_INITCOMM);
+
+	/* Display and Cursor Selection */
+	LCD_SendCommand(LCD_DisplayOnCursorOff);
+
+	/* Clear Screen */
+	LCD_SendCommand(LCD_CLEAR);
+
+}
+void LCD_DisplayChar(uint8 data) /* Send char Func */
+{
+
+
+	GPIO_writePin(LCD_RS_E_PORT,LCD_RS_PIN,PHIGH); /* LCD RS Command Select */ /* LCD RS Command Select */
+
+	/* 8 Bits Command */
+
+#if LCD_PINNUMBER==4   /*     Used 4 Bits */
+
+	    LCD_PORT= (LCD_PORT & LCD_MASK) | ((data & (~LCD_MASK))<<LCD_PINSSHMSB);  /* Inserting The First 4 Bits */
+
+	  /* Enable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PHIGH);
+
+		/* Delay for Some Seconds */
+		_delay_ms(2);
+
+		/* Disable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PLOW);
+
+
+	    LCD_PORT= (LCD_PORT & (LCD_MASK)) | ((data & (LCD_MASK))>>LCD_PINSSHLSB) ;  /* Inserting The 2nd 4 Bits */
+
+	  /* Enable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PHIGH);
+
+		/* Delay for Some Seconds */
+		_delay_ms(2);
+
+		/* Disable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PLOW);
+
+
+
+#elif   LCD_PINNUMBER==8 /* Used 8 bits */
+
+
+	   LCD_PORT=data;
+
+	  /* Enable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PHIGH);
+
+		/* Delay for Some Seconds */
+		_delay_ms(2);
+
+		/* Disable Sending */
+		GPIO_writePin(LCD_RS_E_PORT,LCD_E_PIN,PLOW);
+#endif
+
+
+
+
+
+}
+void LCD_DisplayString(const uint8* data) /* Send String Func */
+{
+uint8 count=0;
+	/* Looping Over The String till The End and Send data */
+    while(*(data+count) != '\0' )
+    {
+       /* Send Char Via lcd */
+    	LCD_DisplayChar(*(data+count));
+
+    	/* Increment count */
+    	count++;
+
+    }
+
+}
+void LCD_MoveCursor(uint8 row,uint8 column)/* Move Cursor Func */
+{
+
+
+
+	// Initialising a Variable To store the address we want to write in
+		uint8 Address=0;
+
+		// Test cases for the invalid inputs
+		if(column>15 || column<0)
+		{
+			column=0;
+		}
+		if(row != 1 && row != 0 )
+			{
+				row=1;
+			}
+
+		// if we want to write at the first row we select the position directlcolumn from column Number
+		if(row==0)
+		{
+			Address=column;
+
+		}
+
+		/* if we want to write at the 2nd row we select the position
+		 * by adding column Number +0x40 (data sheet)*/
+
+		else if(row==1)
+			{
+				Address=0x40+column;
+
+			}
+		// address is 7 bits and MSB must be = 1 (data sheet )
+			SET_BIT(Address,7);
+			// sending command to LCD
+			LCD_SendCommand(Address);
+
+
+
+
+}
+
+
+void LCD_MoveAndDisplayString(uint8* data,uint8 row,uint8 column) /* Move Cursor And Display String Func */
+{
+	/* Setting The Cursor to The right position */
+	LCD_MoveCursor(row,column);
+
+	/* Sending The String */
+
+	LCD_DisplayString(data);
+
+}
+void LCD_ClearScreen(void) /* Clear Screen */
+{
+    /* Send Clear Command */
+	LCD_SendCommand(LCD_CLEAR);
+
+
+
+}
+void LCD_IntegerDisplay(uint8 data) /* Display Integers */
+{
+	uint8 digits[10];
+	uint8 counter=0;
+	if (data == 0)
+	{  /* Check if The Entered Value is Equal zero */
+		digits[0]=(data+'0');
+
+
+	}
+	else
+	{
+	while (data!=0)
+	{
+		digits[counter]=((data%10)+'0'); /* Get The LS digit */
+		data=data/10;                    /* Divide by The Base to get the Following Digit*/
+		counter++;                       /* Increment Counter*/
+	}
+
+	}
+
+
+    LCD_DisplayString(digits); /* Display String */
+
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+/*
+ *                                LCD Driver Configuration Header file
+ *
+ * Module : LCD_Config.h
+ *
+ * Author : Mohab Amged
+ *
+ * Created on: 3 Oct 2022
+ *
+ */
+#ifndef LCD_CONFIG_H_
+#define LCD_CONFIG_H_
+
+/*************************************** Includes ***********************************************************************/
+#include <avr/io.h>
+
+/*************************************** 4 or 8 pins Mode ***********************************************************************/
+#define LCD_PINNUMBER   8
+
+/************************************** Defining LCD port ***********************************************************************/
+
+#define LCD_PORT                PORTA  /* Define The Used I/O Port */
+#define LCD_RS_E_PORT           PORTB  /* Define The Used RS Port */
+#define LCD_RS_PIN              0    /* RS Pin # Inside The Selected Port */
+#define LCD_E_PIN               1    /* E Pin # Inside The Selected Port */
+
+
+
+#if LCD_PINNUMBER==4   /*     Define The Used PINS */
+
+
+
+#define LCD_PINS       0   /* 0-> LSBS Or 4-> MSBS (Values 0 or 4) */
+
+#if     LCD_PINS==0
+#define LCD_MASK    0xF0
+#define LCD_PINSSHMSB  0
+#define LCD_PINSSHLSB  4
+#elif   LCD_PINS==4
+#define LCD_MASK    0x0F
+#define LCD_PINSSHMSB  4
+#define LCD_PINSSHLSB  0
+#endif
+#define LCD_INITCOMM   0x028  /* Instruction to Init LCD WIth 4 Pins Mode */
+#elif   LCD_PINNUMBER==8
+#define LCD_INITCOMM   0x038 /* Instruction to Init LCD WIth 8 Pins Mode */
+#endif
+
+
+/************************************* LCD Commands define ************************************************************************/
+#define LCD_CLEAR                    0x1
+#define LCD_DisplayOnCursorOff       0xC
+#define LCD_DisplayOnCursorOn        0xE
+#define LCD_DisplayOnCursorBlink     0xF
+#define LCD_ShiftDisplayLeft         0x18
+#define LCD_ShiftDisplayRight        0x1C
+#define LCD_Force2ndLine             0xC0
+#define LCD_Force1stLine             0x80
+
+/************************************* Type Definition ***********************************************************************************/
+
+
+
+
+
+
+
+
+
+#endif /* LCD_CONFIG_H_ */

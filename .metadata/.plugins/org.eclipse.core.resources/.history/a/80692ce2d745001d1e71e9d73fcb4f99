@@ -1,0 +1,13 @@
+/*
+ * DC_MotorCfg.h
+ *
+ *  Created on: 7 Oct 2022
+ *      Author: marwa
+ */
+
+#ifndef HAL_INC_DC_MOTOR_CONFIG_H_
+#define HAL_INC_DC_MOTOR_CONFIG_H_
+
+
+
+#endif /* HAL_INC_DC_MOTOR_CONFIG_H_ */

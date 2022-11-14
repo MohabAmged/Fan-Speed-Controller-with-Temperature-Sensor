@@ -1,0 +1,80 @@
+03:51:02 **** Build of configuration Debug for project Project3 ****
+make all 
+Building file: ../ADC.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"ADC.d" -MT"ADC.o" -c -o "ADC.o" "../ADC.c"
+Finished building: ../ADC.c
+ 
+Building file: ../DC_Motor.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"DC_Motor.d" -MT"DC_Motor.o" -c -o "DC_Motor.o" "../DC_Motor.c"
+Finished building: ../DC_Motor.c
+ 
+Building file: ../GPIO.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"GPIO.d" -MT"GPIO.o" -c -o "GPIO.o" "../GPIO.c"
+Finished building: ../GPIO.c
+ 
+Building file: ../LCD.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"LCD.d" -MT"LCD.o" -c -o "LCD.o" "../LCD.c"
+In file included from ../LCD.c:14:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../LCD.c: In function 'LCD_IntegerDisplay':
+../LCD.c:272: warning: implicit declaration of function 'itoa'
+../LCD.c:273: warning: pointer targets in passing argument 1 of 'LCD_DisplayString' differ in signedness
+Finished building: ../LCD.c
+ 
+Building file: ../Main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"Main.d" -MT"Main.o" -c -o "Main.o" "../Main.c"
+In file included from ../Main.c:27:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../Main.c: In function 'main':
+../Main.c:51: warning: pointer targets in passing argument 1 of 'LCD_DisplayString' differ in signedness
+../Main.c:52: warning: pointer targets in passing argument 1 of 'LCD_MoveAndDisplayString' differ in signedness
+../Main.c:70: warning: pointer targets in passing argument 1 of 'LCD_DisplayString' differ in signedness
+../Main.c:73: warning: pointer targets in passing argument 1 of 'LCD_MoveAndDisplayString' differ in signedness
+../Main.c:79: warning: pointer targets in passing argument 1 of 'LCD_MoveAndDisplayString' differ in signedness
+../Main.c:85: warning: pointer targets in passing argument 1 of 'LCD_MoveAndDisplayString' differ in signedness
+../Main.c:91: warning: pointer targets in passing argument 1 of 'LCD_MoveAndDisplayString' differ in signedness
+../Main.c:97: warning: pointer targets in passing argument 1 of 'LCD_MoveAndDisplayString' differ in signedness
+Finished building: ../Main.c
+ 
+Building file: ../PWM.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"PWM.d" -MT"PWM.o" -c -o "PWM.o" "../PWM.c"
+Finished building: ../PWM.c
+ 
+Building file: ../lm35_sensor.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"lm35_sensor.d" -MT"lm35_sensor.o" -c -o "lm35_sensor.o" "../lm35_sensor.c"
+Finished building: ../lm35_sensor.c
+ 
+Building target: Project3.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,Project3.map -mmcu=atmega32 -o "Project3.elf"  ./ADC.o ./DC_Motor.o ./GPIO.o ./LCD.o ./Main.o ./PWM.o ./lm35_sensor.o   
+Finished building target: Project3.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S Project3.elf  >"Project3.lss"
+Finished building: Project3.lss
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 Project3.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    8780 bytes (26.8% Full)
+(.text + .data + .bootloader)
+
+Data:        294 bytes (14.4% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+03:51:03 Build Finished. 0 errors, 12 warnings. (took 1s.475ms)
+

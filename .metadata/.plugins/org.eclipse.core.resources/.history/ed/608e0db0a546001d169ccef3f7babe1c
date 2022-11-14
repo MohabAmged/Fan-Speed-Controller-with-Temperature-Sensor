@@ -1,0 +1,108 @@
+/**********************************************************************************************************************
+ *  FILE DESCRIPTION
+ *  -------------------------------------------------------------------------------------------------------------------
+ *  File:  		  Main.c
+ *  Module:  	  App
+ *
+ *  Description:  Src file for the Application
+ *
+ *  -------------------------------------------------------------------------------------------------------------------
+ *	Author: 	  Mohab Amged
+ *	Date:		  7/10/2022
+ *********************************************************************************************************************/
+
+/**************************************************************************************************************************************
+*
+*                                                 INCLUDES
+*
+**************************************************************************************************************************************/
+#include "Macros.h"
+#include "Std_Types.h"
+#include "avr/io.h"
+#include "ADC.h"
+#include "PWM.h"
+#include "LCD.h"
+#include "DC_Motor.h"
+#include "lm35_sensor.h"
+#include <util/delay.h>
+/**************************************************************************************************************************************
+*
+*                                                Main
+*
+**************************************************************************************************************************************/
+int main (void)
+{
+	/* Variables Init*/
+	uint8 temp=0;
+   /* Set Pins Directions */
+
+   /* Init ADC Config Variable*/
+   ADC_ConfigType AdcConfig;
+
+   /* Adding Config for ADC*/
+   AdcConfig.prescaler=ADC_DIV8;
+   AdcConfig.ref_volt=ADC_INTERNAL;
+
+   /*Adc Init */
+	ADC_init(&AdcConfig);
+
+   /*LCD Init  */
+    LCD_Init();
+    LCD_DisplayString("FAN IS ");
+    LCD_MoveAndDisplayString("TEMP = ", 1, 0);
+
+   /*Motor Init*/
+    DcMotor_Init();
+
+    /* Make ADC Channel AS Input */
+    GPIO_setupPinDirection(PORTIDA,SENSOR_CHANNEL_ID, POUTPUT);
+
+
+
+while(1)
+{
+
+	/* Temp Reading */
+	temp=LM35_getTemperature();
+	/* display on Lcd  */
+	LCD_MoveCursor(1,7);
+	LCD_IntegerDisplay(temp);
+	LCD_DisplayString("  C   ");
+
+
+
+	if(temp<30)
+	{
+		LCD_MoveAndDisplayString("OFF",0,8);
+		DcMotor_Rotate(Stop, 0); /* Stop Fan */
+	}
+	else if (temp>=30 && temp<60 )
+	{   LCD_MoveAndDisplayString("ON ",0,8);
+		DcMotor_Rotate(ClockWise, 25); /* Fan Rotate CW With 25%  Speed */
+
+	}
+	else if (temp>=60 && temp<90 )
+	{   LCD_MoveAndDisplayString("ON ",0,8);
+			DcMotor_Rotate(ClockWise, 50); /* Fan Rotate CW With  50%  Speed */
+
+	}
+	else if (temp>=90 && temp<120 )
+	{   LCD_MoveAndDisplayString("ON ",0,8);
+		DcMotor_Rotate(ClockWise, 75); /* Fan Rotate CW With 75%  Speed */
+
+	}
+	else if (temp>=120  )
+	{   LCD_MoveAndDisplayString("ON ",0,8);
+		DcMotor_Rotate(ClockWise, 100); /* Fan Rotate CW With 100%  Speed */
+
+	}
+
+
+
+}
+
+
+
+	return 0;
+}
+
